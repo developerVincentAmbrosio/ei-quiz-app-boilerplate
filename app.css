@@ -6,3 +6,63 @@
   * https://github.com/andreacardybailey/responsive_example/blob/master/styles/responsive-base.css 
   *
 */
+
+* {
+  box-sizing: border-box;
+}
+
+/* CLASSES */ 
+
+.group {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  flex: 1;
+}
+
+/* TYPOGRAPHY */
+
+h1, h2, h3, p, li {
+  font-family: 'Times New Roman', Times, serif;
+  color: black;
+}
+
+h1 {
+  font-size: 36px;
+  font-style: oblique;
+}
+
+h2 {
+  font-size: 24px;
+  font-style: oblique;
+}
+
+h3 {
+  font-size: 18px;
+  font-style: oblique;
+}
+
+p, li {
+  font-size: 14px;
+}
+
+/* BUTTONS */
+
+/* FORMS */
+
+/* SECTIONS */
+
+/* MEDIA QUERIES */
+
+@media all and (min-width: 800px) {
+
+  .group {
+    flex-direction: row;
+  }
+
+.item {
+  flex: 1;
+  }       
+}
