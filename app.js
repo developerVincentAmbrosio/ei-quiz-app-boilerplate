@@ -95,7 +95,7 @@ function questionsForm() {
   <div class="item">
     <ul>
       <li>Question Number ${store.questionNumber}/5</li>
-      <l1>Score X/5</l1>
+      <l1>Score ${store.score}/5</l1>
     </ul>
     <form id="questionForm" class="questionForm">
       <fieldset>
@@ -121,7 +121,11 @@ function questionsForm() {
             <label for="option-4"> ${store.questions[store.questionNumber].answers[3]}</label>
             </div>
             <div>
-            <input type="submit" id="Submit">
+            <input type="submit" id="submit">
+            </div>
+            <div class="hidden">
+              <p>${userFeedback(checkUserAnswer)}</p>
+              <button type="button" id="next">next</button>
             </div>
           </div>
         </div>
@@ -130,6 +134,7 @@ function questionsForm() {
   </div>
 </div>`;
 }
+
 
 /********** RENDER FUNCTION(S) **********/
 
@@ -147,19 +152,29 @@ function displaysQuestionsForm() {
 
 // These functions handle events (submit, click, etc)
 
+//helper function used in userFeedback and handleCurrentScore functions
 function checkUserAnswer(answer) {
+  let answeredCorrectly;
   if (store.questions[store.questionNumber].correctAnswer === answer) {
-    console.log("Correct!");
+    answeredCorrectly = true;
   } else {
-    console.log("Incorrect; the correct answer is " + store.questions[store.questionNumber].correctAnswer);
+    answeredCorrectly = false;
   }
+}
+
+function userFeedback(checkUserAnswer) {
+  checkUserAnswer ? "Correct!" : "Incorrect; the correct answer is " + store.questions[store.questionNumber].correctAnswer;
 }
 
 function setupFormSubmitListener() {
   $('#questionForm').submit(function(event) {
     event.preventDefault();
-    let userAnswer = $("input[type='radio']:checked").next().text();
-    checkUserAnswer(userAnswer);
+    let userAnswer = $("input[type='radio']:checked").next().text().trim();
+    handleCurrentScore();
+   $('.hidden').removeClass();
+   $('#submit').addClass('hidden');
+   
+  // nextQuestionListener();
   });
 }
 
@@ -171,19 +186,29 @@ function startButtonListener() {
   });
 }
 
+function handleCurrentScore() {
+  if (checkUserAnswer == true) {
+    store.score +=1;
+  }
+}
 
+/*
+function nextQuestionListener() {
+  $('#next').on('click', function(event) {
+    store.questions[store.questionNumber] += 1;
+  });
+}
+*/
 
 function questionNumberCounter() {
-  if (store.quizStarted == true); {
-      return store.questionNumber ++;
-    }
+      return store.questionNumber += 1;
   }
+
 
 function handleRunQuiz(){
   landingPage();
   startButtonListener();
   setupFormSubmitListener();
-  questionNumberCounter();
 }
 
 $(handleRunQuiz);

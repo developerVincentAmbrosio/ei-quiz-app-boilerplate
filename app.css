@@ -22,6 +22,10 @@
   flex: 1;
 }
 
+.hidden {
+  display: none;
+}
+
 /* TYPOGRAPHY */
 
 h1, h2, h3, p, li {
