@@ -48,7 +48,16 @@ p, li {
   font-size: 14px;
 }
 
+ul {
+  list-style: none;
+}
+
 /* BUTTONS */
+
+form input [type = "radio"] {
+  font-size: 14px;
+  color: black;
+}
 
 /* FORMS */
 

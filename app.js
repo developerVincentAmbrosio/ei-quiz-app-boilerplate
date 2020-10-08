@@ -5,7 +5,7 @@ const store = {
   // 5 or more questions are required
   questions: [
     {
-      question: 'What location is known as “the cradle of civilization?',
+      question: 'What location is known as “the cradle of civilization"?',
       answers: [
         'Babylon',
         'Yucatán Peninsula',
@@ -81,44 +81,44 @@ const store = {
 
 //displays landing page
 function startingPage() {
-  return `<div class = "group">
-  <div class = "item">
-    <p>This quiz will test your knowledge from ancient history to the Industrial Revolution</p>
-      <button type = "button" class = "start">Start Quiz!</button>
+  return `<div class="group">
+  <div class="item">
+    <p>This quiz will test your knowledge from ancient history to the Industrial Revolution.</p>
+      <button type="button" class="start">Start Quiz!</button>
     </div>
   </div>`;
 }
 
 //dispays question form
 function questionsForm() {
-  return `<div class = "group">
-  <div class = "item">
+  return `<div class="group">
+  <div class="item">
     <ul>
-      <li>Question Number X/5</li>
+      <li>Question Number ${store.questionNumber}/5</li>
       <l1>Score X/5</l1>
     </ul>
-    <form id = "questionForm" class = "questionForm">
+    <form id="questionForm" class="questionForm">
       <fieldset>
-        <div class =  "question">
-          <legend>Question number 1?</legend>
+        <div class="question">
+          <legend>${store.questions[store.questionNumber].question}</legend>
         </div>
-        <div class = "options">
-          <div class = "answers">
-            <div id = "option-1">
-            <input type = "radio" name = "options" id = "option1" required>
-            <label for = "option 1"> Option 1</label>
+        <div class="options">
+          <div class="answers">
+            <div id="option-1">
+            <input type="radio" name="options" id="option1" required>
+            <label for="option-1"> ${store.questions[store.questionNumber].answers[0]}</label>
             </div>
-            <div id = "option-2">
-            <input type = "radio" name = "options" id = "option2" required>
-            <label for = "option 2"> Option 2</label>
+            <div id="option-2">
+            <input type="radio" name="options" id="option2" required>
+            <label for="option-2"> ${store.questions[store.questionNumber].answers[1]}</label>
             </div>
-            <div id = "option-3">
-            <input type = "radio" name = "options" id = "option3" required>
-            <label for = "option 3"> Option 3</label>
+            <div id="option-3">
+            <input type="radio" name="options" id="option3" required>
+            <label for="option-3"> ${store.questions[store.questionNumber].answers[2]}</label>
             </div>
-            <div id = "option-4">
-            <input type = "radio" name = "options" id = "option4" required>
-            <label for = "option 4"> Option 4</label>
+            <div id="option-4">
+            <input type="radio" name="options" id="option4" required>
+            <label for="option-4"> ${store.questions[store.questionNumber].answers[3]}</label>
             </div>
             <div>
             <input type="submit" id="Submit">
@@ -139,33 +139,51 @@ function landingPage() {
   $('main').html(startingPage);
 }
 
+function displaysQuestionsForm() {
+  $('.js-quiz').html(questionsForm);
+}
+
 /********** EVENT HANDLER FUNCTIONS **********/
 
 // These functions handle events (submit, click, etc)
 
-function cycleThroughStore() {
-  store.forEach((e)=>{
-    return e;
+function checkUserAnswer(answer) {
+  if (store.questions[store.questionNumber].correctAnswer === answer) {
+    console.log("Correct!");
+  } else {
+    console.log("Incorrect; the correct answer is " + store.questions[store.questionNumber].correctAnswer);
+  }
+}
+
+function setupFormSubmitListener() {
+  $('#questionForm').submit(function(event) {
+    event.preventDefault();
+    let userAnswer = $("input[type='radio']:checked").next().text();
+    checkUserAnswer(userAnswer);
   });
 }
 
-function startQuiz() {
-  $(this).on('click', function(event) {
-    return (store.quizStarted ? false : true);
+function startButtonListener() {
+  $('.start').on('click', function(event) {
+    store.quizStarted = true;
+    displaysQuestionsForm();
+    setupFormSubmitListener();
   });
 }
 
-function displaysQuestionsForm() {
-  $(this).on('click', function(event) {
-    $('.js-quiz').html(questionsForm);
-  });
-}
+
+
+function questionNumberCounter() {
+  if (store.quizStarted == true); {
+      return store.questionNumber ++;
+    }
+  }
 
 function handleRunQuiz(){
   landingPage();
-  displaysQuestionsForm();
-  startQuiz();
-  cycleThroughStore()
+  startButtonListener();
+  setupFormSubmitListener();
+  questionNumberCounter();
 }
 
 $(handleRunQuiz);
