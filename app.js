@@ -138,7 +138,7 @@ function questionsFormTemplate() {
 function results () {
   return `<div class="group start-end">
             <div class="item">
-              <p>You scored ${store.score}/${store.questions.length}!</p>
+              <h3>You scored ${store.score}/${store.questions.length}!</h3>
               <button type="reset" class="reset">Restart Quiz!</button>
             </div>
           </div>  

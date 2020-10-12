@@ -23,37 +23,50 @@ body {
 
 .group {
   display: flex;
+  justify-content: center;
   flex-direction: column;
-/*  align-items: center; */
+  align-items: center;
+  align-content: space-around;
 }
 
 .item {
   flex: 1;
   padding: 0px;
-  align-content: center;
-/*  border-radius: 25px;*/
+  position: relative;
+}
+
+.question-score, .start-end, .panel {
+  background-color: darkblue;
+  border-radius: 25px;
+  box-shadow: 3px 3px 5px 5px #ccc;
+  position: relative;
+  width: 85%;
 }
 
 .question-score {
-  padding: 0;
-  margin: 0;
-  background-color:darkblue;
-  width: 100%;
+  padding-top: 5px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
   opacity: 75%;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  margin-bottom: 50px;
 }
 
 .panel {
-  background-color: darkblue;
-  width: 100%;
-  align-items: center;
+  padding-top: 10px;
+  margin: auto;
 }
 
 .start-end {
-  background-color: darkblue;
+  padding-left: 15px;
+  padding-right: 15px;
   padding-top: 50px;
-  width: 100%;
-  height: 200px;
-  align-items: center;
+  padding-bottom: 15px;
+  min-height: 200px;
+  margin: auto;
 }
 
 .answered {
@@ -75,7 +88,7 @@ form input [type = "radio"] {
   color:#fff;
 }
 
-h1, p, legend, li, label, .options {
+h1, h3, p, legend, li, label, .options {
   padding-left: 5px;
   padding-right: 5px;
   font-family: Palatino, Times, serif;
@@ -147,49 +160,53 @@ ul {
 
 button, .start, #submit, #next, .reset {
   width: 125px;
+  height: 40px;
   font-size: 18px;
-  color: #000;
+  color: darkblue;
   background-color: #fff;
   border-radius: 10px;
-  float: right;
   margin: 10px;
   border-width: 0px;
+  box-shadow: 1px 1px 2px 2px #000;
 }
 
 /* MEDIA QUERIES */
 
 @media all and (min-width: 1000px) {
 
+  .group {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .item {
     flex: 1;
     padding: 0px;
-    align-content: center;
-    border-radius: 25px;
-  }     
-
-  .question-score {
-    padding: 0;
-    margin: 0;
+  }
+  
+  
+  .question-score, .start-end, .panel {
+    width: 66%;
   }
 
-  .panel {
-    align-items: center;
+  .question-score {
+    margin-bottom: 75px;
+  }
+
+  .panel, .start-end {
+    padding: 20px;
+    margin: auto;
   }
 
   .start-end {
     padding-top: 50px;
-    height: 200px;
+    min-height : 200px;
+    margin: auto;
   }
 
-  .answered {
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 0;
-  }
-
-/* TYPOGRAPHY */
+/* MEDIA QUERIES TYPOGRAPHY */
 
   form input [type = "radio"] {
     font-size: 24px;
@@ -197,8 +214,8 @@ button, .start, #submit, #next, .reset {
   }
 
   h1, p, legend, li, label, .options {
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
   }
 
   p, .options, li, label, legend {
@@ -210,39 +227,9 @@ button, .start, #submit, #next, .reset {
     text-align: center;
   }  
 
-  legend {
-    margin-bottom: 10px;
-  }
-
   p {
     line-height: 42px;
     margin: 0px;
-  }
-/*
-li, label {
-  text-align: center;
-}*/
-
-  fieldset {
-    border-width: 0px;
-    margin-top: 10px;
-  }
-
-  ul {
-    list-style: none;
-    padding-left: 0px;
-    padding-right: 0px;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    margin: 0;
-  }
-
-  .correct {
-    border-radius: 5px;
-  }
-
-  .wrong {
-    border-radius: 5px;
   }
 
   .options {
@@ -250,14 +237,4 @@ li, label {
     padding-left: 50px;
   }
 
-/* BUTTONS */
-
-  button, .start, #submit, #next, .reset {
-    width: 125px;
-    font-size: 24px;
-    border-radius: 10px;
-    float: right;
-    margin: 10px;
-    border-width: 0px;
-  }
 }
