@@ -83,7 +83,7 @@ const store = {
 
 // These functions return HTML templates
 
-//displays landing page
+//html for index page
 function startingPage() {
   return `<div class="group start-end">
             <div class="item">
@@ -93,7 +93,7 @@ function startingPage() {
           </div>`;
 }
 
-//dispays question form
+//html for questions
 function questionsFormTemplate() {
   return `<div class="group">
             <div class="question-score">
@@ -135,6 +135,7 @@ function questionsFormTemplate() {
           </div>`;
 }
 
+//html for results
 function results () {
   return `<div class="group start-end">
             <div class="item">
@@ -147,19 +148,19 @@ function results () {
 
 /********** RENDER FUNCTION(S) **********/
 
-// This function conditionally replaces the contents of the <main> tag based on the state of the store
-
+// renders initial view and calls function to start quiz
 function landingPage() {
   $('main').html(startingPage);
   startButtonListener();
 }
 
-// Renders question template and attach submit and next button event listeners
+// Renders question template and next button event listeners
 function setupNextQuestion() {
   $('.js-quiz').html(questionsFormTemplate);
   setupFormSubmitListener();
 }
 
+//Renders final score and calls listener to reset the quiz
 function displayFinalResults() {
   $('.js-quiz').html(results);
   resetQuizListener();
@@ -169,7 +170,8 @@ function displayFinalResults() {
 
 // These functions handle events (submit, click, etc)
 
-//helper function used in userFeedback and handleCurrentScore functions
+//checks the answer the user submitted against the correct answer in the store
+//if the submitted answer is correct, this function changes the score in the store object
 function checkUserAnswer(answer) {
   if (store.questions[store.questionNumber].correctAnswer === answer) {
     store.wasAnswerCorrect = true;
@@ -179,6 +181,10 @@ function checkUserAnswer(answer) {
   }
 }
 
+//function below listens for submit event (when user hits "submit" to officially answer a question),
+//takes the answer, runs it through the checkUserAnswer function above, and provides feedback on whether
+//the submitted answer was correct or not. It also hides the "submit" button, and calls a function to 
+//move to the next question.
 function setupFormSubmitListener() {
   $('#questionForm').submit(function(event) {
     event.preventDefault();
@@ -191,7 +197,8 @@ function setupFormSubmitListener() {
    nextQuestionListener();
   });
 }
-
+//listener that sends the user to the questions and changes the store if the quiz was started and
+//calls a function to fire the next question
 function startButtonListener() {
   $('.start').on('click', function(event) {
     store.quizStarted = true;
@@ -199,6 +206,7 @@ function startButtonListener() {
   });
 }
 
+//function to reset the items in the store and go back to the "start quiz" page
 function resetQuizListener() {
   $('.reset').on('click', function(event) {
     store.quizStarted = false;
@@ -208,6 +216,8 @@ function resetQuizListener() {
   });
 }
 
+//renders the next question and iterates the question number
+//if there are no more questions, this function renders the results page
 function nextQuestionListener() {
   $('#next').on('click', function(event) {
     store.questionNumber += 1;
@@ -215,9 +225,9 @@ function nextQuestionListener() {
   });
 }
 
+//calls the functions needed to start the quiz
 function handleRunQuiz(){
   landingPage();
-//  startButtonListener();
   setupFormSubmitListener();
 }
 
