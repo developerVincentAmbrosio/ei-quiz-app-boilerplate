@@ -1,3 +1,6 @@
+
+//store.questions[store.questionNumber].answers[0]
+
 /**
  * Example store structure
  */
@@ -57,7 +60,8 @@ const store = {
   ],
   quizStarted: false,
   questionNumber: 0,
-  score: 0
+  score: 0,
+  wasAnswerCorrect: false
 };
 
 /**
@@ -81,60 +85,65 @@ const store = {
 
 //displays landing page
 function startingPage() {
-  return `<div class="group">
-  <div class="item">
-    <p>This quiz will test your knowledge from ancient history to the Industrial Revolution.</p>
-      <button type="button" class="start">Start Quiz!</button>
-    </div>
-  </div>`;
+  return `<div class="group start-end">
+            <div class="item">
+              <p>This quiz will test your knowledge from ancient history to the Industrial Revolution.</p>
+              <button type="button" class="start">Start Quiz!</button>
+            </div>
+          </div>`;
 }
 
 //dispays question form
-function questionsForm() {
+function questionsFormTemplate() {
   return `<div class="group">
-  <div class="item">
-    <ul>
-      <li>Question Number ${store.questionNumber}/5</li>
-      <l1>Score ${store.score}/5</l1>
-    </ul>
-    <form id="questionForm" class="questionForm">
-      <fieldset>
-        <div class="question">
-          <legend>${store.questions[store.questionNumber].question}</legend>
-        </div>
-        <div class="options">
-          <div class="answers">
-            <div id="option-1">
-            <input type="radio" name="options" id="option1" required>
-            <label for="option-1"> ${store.questions[store.questionNumber].answers[0]}</label>
+            <div class="question-score">
+              <ul>
+                <li>Question Number ${store.questionNumber + 1}/${store.questions.length}</li>
+                <li>Score ${store.score}/${store.questions.length}</li>
+              </ul>
+            </div>  
+            <div class="item panel">
+              <form id="questionForm">
+                <fieldset>
+                  <legend>${store.questions[store.questionNumber].question}</legend>
+                  <div class="options">
+                    <div id="option1">
+                      <input type="radio" name="options" id="option1" required>
+                      <label for="option1"> ${store.questions[store.questionNumber].answers[0]}</label>
+                    </div>
+                    <div id="option2">
+                      <input type="radio" name="options" id="option2" required>
+                      <label for="option2"> ${store.questions[store.questionNumber].answers[1]}</label>
+                    </div>
+                    <div id="option3">
+                      <input type="radio" name="options" id="option3" required>
+                      <label for="option3"> ${store.questions[store.questionNumber].answers[2]}</label>
+                    </div>
+                    <div id="option4">
+                      <input type="radio" name="options" id="option4" required>
+                      <label for="option4"> ${store.questions[store.questionNumber].answers[3]}</label>
+                    </div>
+                    <input type="submit" id="submit">
+                  </div>
+                  <div class="hidden">
+                    <p class="js-user-feedback-text answered"></p>
+                    <button type="button" id="next">next</button>
+                  </div>    
+                </fieldset>
+              </form>
             </div>
-            <div id="option-2">
-            <input type="radio" name="options" id="option2" required>
-            <label for="option-2"> ${store.questions[store.questionNumber].answers[1]}</label>
-            </div>
-            <div id="option-3">
-            <input type="radio" name="options" id="option3" required>
-            <label for="option-3"> ${store.questions[store.questionNumber].answers[2]}</label>
-            </div>
-            <div id="option-4">
-            <input type="radio" name="options" id="option4" required>
-            <label for="option-4"> ${store.questions[store.questionNumber].answers[3]}</label>
-            </div>
-            <div>
-            <input type="submit" id="submit">
-            </div>
-            <div class="hidden">
-              <p>${userFeedback(checkUserAnswer)}</p>
-              <button type="button" id="next">next</button>
-            </div>
-          </div>
-        </div>
-      </fieldset>
-    </form>
-  </div>
-</div>`;
+          </div>`;
 }
 
+function results () {
+  return `<div class="group start-end">
+            <div class="item">
+              <p>You scored ${store.score}/${store.questions.length}!</p>
+              <button type="reset" class="reset">Restart Quiz!</button>
+            </div>
+          </div>  
+         `;
+}
 
 /********** RENDER FUNCTION(S) **********/
 
@@ -142,10 +151,18 @@ function questionsForm() {
 
 function landingPage() {
   $('main').html(startingPage);
+  startButtonListener();
 }
 
-function displaysQuestionsForm() {
-  $('.js-quiz').html(questionsForm);
+// Renders question template and attach submit and next button event listeners
+function setupNextQuestion() {
+  $('.js-quiz').html(questionsFormTemplate);
+  setupFormSubmitListener();
+}
+
+function displayFinalResults() {
+  $('.js-quiz').html(results);
+  resetQuizListener();
 }
 
 /********** EVENT HANDLER FUNCTIONS **********/
@@ -154,60 +171,53 @@ function displaysQuestionsForm() {
 
 //helper function used in userFeedback and handleCurrentScore functions
 function checkUserAnswer(answer) {
-  let answeredCorrectly;
   if (store.questions[store.questionNumber].correctAnswer === answer) {
-    answeredCorrectly = true;
+    store.wasAnswerCorrect = true;
+    store.score +=1;
   } else {
-    answeredCorrectly = false;
+    store.wasAnswerCorrect = false;
   }
-}
-
-function userFeedback(checkUserAnswer) {
-  checkUserAnswer ? "Correct!" : "Incorrect; the correct answer is " + store.questions[store.questionNumber].correctAnswer;
 }
 
 function setupFormSubmitListener() {
   $('#questionForm').submit(function(event) {
     event.preventDefault();
     let userAnswer = $("input[type='radio']:checked").next().text().trim();
-    handleCurrentScore();
+    checkUserAnswer(userAnswer);
+   $('.js-user-feedback-text').text(store.wasAnswerCorrect ? "Correct!" : "Incorrect; the correct answer is " + store.questions[store.questionNumber].correctAnswer) + ".";
+   $('.js-user-feedback-text').addClass(store.wasAnswerCorrect ? 'correct' : 'wrong');
    $('.hidden').removeClass();
    $('#submit').addClass('hidden');
-   
-  // nextQuestionListener();
+   nextQuestionListener();
   });
 }
 
 function startButtonListener() {
   $('.start').on('click', function(event) {
     store.quizStarted = true;
-    displaysQuestionsForm();
-    setupFormSubmitListener();
+    setupNextQuestion();
   });
 }
 
-function handleCurrentScore() {
-  if (checkUserAnswer == true) {
-    store.score +=1;
-  }
+function resetQuizListener() {
+  $('.reset').on('click', function(event) {
+    store.quizStarted = false;
+    store.questionNumber = 0;
+    store.score = 0;
+    landingPage();
+  });
 }
 
-/*
 function nextQuestionListener() {
   $('#next').on('click', function(event) {
-    store.questions[store.questionNumber] += 1;
+    store.questionNumber += 1;
+    store.questionNumber < store.questions.length ? setupNextQuestion() : displayFinalResults();
   });
 }
-*/
-
-function questionNumberCounter() {
-      return store.questionNumber += 1;
-  }
-
 
 function handleRunQuiz(){
   landingPage();
-  startButtonListener();
+//  startButtonListener();
   setupFormSubmitListener();
 }
 
