@@ -107,19 +107,19 @@ function questionsFormTemplate() {
                 <fieldset>
                   <legend>${store.questions[store.questionNumber].question}</legend>
                   <div class="options">
-                    <div id="option1">
+                    <div>
                       <input type="radio" name="options" id="option1" required>
                       <label for="option1"> ${store.questions[store.questionNumber].answers[0]}</label>
                     </div>
-                    <div id="option2">
+                    <div>
                       <input type="radio" name="options" id="option2" required>
                       <label for="option2"> ${store.questions[store.questionNumber].answers[1]}</label>
                     </div>
-                    <div id="option3">
+                    <div>
                       <input type="radio" name="options" id="option3" required>
                       <label for="option3"> ${store.questions[store.questionNumber].answers[2]}</label>
                     </div>
-                    <div id="option4">
+                    <div>
                       <input type="radio" name="options" id="option4" required>
                       <label for="option4"> ${store.questions[store.questionNumber].answers[3]}</label>
                     </div>
@@ -149,6 +149,16 @@ function results () {
 /********** RENDER FUNCTION(S) **********/
 
 // renders initial view and calls function to start quiz
+function render() {
+  if (store.quizStarted == false) {
+    landingPage();
+  } else if (store.questionNumber < store.questions.length) {
+    setupNextQuestion();
+  } else {
+    displayFinalResults();
+  }
+}
+
 function landingPage() {
   $('main').html(startingPage);
   startButtonListener();
@@ -190,19 +200,24 @@ function setupFormSubmitListener() {
     event.preventDefault();
     let userAnswer = $("input[type='radio']:checked").next().text().trim();
     checkUserAnswer(userAnswer);
-   $('.js-user-feedback-text').text(store.wasAnswerCorrect ? "Correct!" : "Incorrect; the correct answer is " + store.questions[store.questionNumber].correctAnswer + ".");
-   $('.js-user-feedback-text').addClass(store.wasAnswerCorrect ? 'correct' : 'wrong');
-   $('.hidden').removeClass();
-   $('#submit').addClass('hidden');
-   nextQuestionListener();
+    showUserFeedback();
+    nextQuestionListener();
   });
 }
+
+function showUserFeedback() {
+  $('.js-user-feedback-text').text(store.wasAnswerCorrect ? "Correct!" : "Incorrect; the correct answer is " + store.questions[store.questionNumber].correctAnswer + ".");
+  $('.js-user-feedback-text').addClass(store.wasAnswerCorrect ? 'correct' : 'wrong');
+  $('.js-user-feedback-text').parent().removeClass('hidden');
+  $('#submit').addClass('hidden');
+}
+
 //listener that sends the user to the questions and changes the store if the quiz was started and
 //calls a function to fire the next question
 function startButtonListener() {
   $('.start').on('click', function(event) {
     store.quizStarted = true;
-    setupNextQuestion();
+    render();
   });
 }
 
@@ -212,7 +227,7 @@ function resetQuizListener() {
     store.quizStarted = false;
     store.questionNumber = 0;
     store.score = 0;
-    landingPage();
+    render();
   });
 }
 
@@ -221,14 +236,14 @@ function resetQuizListener() {
 function nextQuestionListener() {
   $('#next').on('click', function(event) {
     store.questionNumber += 1;
-    store.questionNumber < store.questions.length ? setupNextQuestion() : displayFinalResults();
+    render();
   });
 }
 
 //calls the functions needed to start the quiz
-function handleRunQuiz(){
-  landingPage();
+function initializeQuiz(){
+  render();
   setupFormSubmitListener();
 }
 
-$(handleRunQuiz);
+$(initializeQuiz);
