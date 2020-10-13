@@ -190,7 +190,7 @@ function setupFormSubmitListener() {
     event.preventDefault();
     let userAnswer = $("input[type='radio']:checked").next().text().trim();
     checkUserAnswer(userAnswer);
-   $('.js-user-feedback-text').text(store.wasAnswerCorrect ? "Correct!" : "Incorrect; the correct answer is " + store.questions[store.questionNumber].correctAnswer) + ".";
+   $('.js-user-feedback-text').text(store.wasAnswerCorrect ? "Correct!" : "Incorrect; the correct answer is " + store.questions[store.questionNumber].correctAnswer + ".");
    $('.js-user-feedback-text').addClass(store.wasAnswerCorrect ? 'correct' : 'wrong');
    $('.hidden').removeClass();
    $('#submit').addClass('hidden');
