@@ -11,10 +11,6 @@
   box-sizing: border-box;
 }
 
-/*header {
-  background-color: #fff;
-}*/
-
 body {
   background-color: #fff;
 }
@@ -48,11 +44,12 @@ body {
   padding-bottom: 0px;
   padding-left: 0px;
   padding-right: 0px;
-  opacity: 75%;
   margin-left: 0;
   margin-right: 0;
   margin-top: 0;
   margin-bottom: 50px;
+  opacity: 75%;
+
 }
 
 .panel {
@@ -63,9 +60,9 @@ body {
 .start-end {
   padding-left: 15px;
   padding-right: 15px;
-  padding-top: 50px;
+  padding-top: 20px;
   padding-bottom: 15px;
-  min-height: 200px;
+  min-height: 200px; 
   margin: auto;
 }
 
@@ -97,6 +94,7 @@ h1, h3, p, legend, li, label, .options {
 
 p, .options, li, label, legend {
   font-size: 18px;
+  line-height: 36px;
 }
 
 h1 {
@@ -108,11 +106,6 @@ h1 {
 legend {
   margin-bottom: 10px;
   font-weight: bold;
-}
-
-p {
-  line-height: 36px;
-  margin: 0px;
 }
 
 li, label {
@@ -135,8 +128,7 @@ ul {
 
 .correct {
   color: green;
-  border-width: 2px;
-  border-color: green;
+  font-weight: bold;
   background-color: #fff;
   text-align: center;
   border-radius: 5px;
@@ -144,23 +136,21 @@ ul {
 
 .wrong {
   color: red;
-  border-width: 2px;
-  border-color: red;
+  font-weight: bold;
   background-color: #fff;
   text-align: center;
   border-radius: 5px;
 }
 
 .options {
-  line-height: 24px;
   padding-left: 25px;
 }
 
 /* BUTTONS */
 
 button, .start, #submit, #next, .reset {
-  width: 125px;
-  height: 40px;
+  width: 110px;
+  height: 50px;
   font-size: 18px;
   color: darkblue;
   background-color: #fff;

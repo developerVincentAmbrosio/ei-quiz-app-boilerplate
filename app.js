@@ -135,7 +135,7 @@ function questionsFormTemplate() {
           </div>`;
 }
 
-//html for results
+//html for results at the end
 function results () {
   return `<div class="group start-end">
             <div class="item">
