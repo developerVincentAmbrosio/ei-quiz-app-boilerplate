@@ -148,7 +148,7 @@ function results () {
 
 /********** RENDER FUNCTION(S) **********/
 
-// renders initial view and calls function to start quiz
+// renders correct page depending on the condition of the store
 function render() {
   if (store.quizStarted == false) {
     landingPage();
@@ -159,12 +159,13 @@ function render() {
   }
 }
 
+// renders initial view and calls function to start quiz
 function landingPage() {
   $('main').html(startingPage);
   startButtonListener();
 }
 
-// Renders question template and next button event listeners
+// renders question template and next button event listeners
 function setupNextQuestion() {
   $('.js-quiz').html(questionsFormTemplate);
   setupFormSubmitListener();
@@ -192,9 +193,9 @@ function checkUserAnswer(answer) {
 }
 
 //function below listens for submit event (when user hits "submit" to officially answer a question),
-//takes the answer, runs it through the checkUserAnswer function above, and provides feedback on whether
-//the submitted answer was correct or not. It also hides the "submit" button, and calls a function to 
-//move to the next question.
+//takes the answer, runs it through the checkUserAnswer function above, and calls another function
+//to provide the user with feedback and calls a function to move to the next question.
+
 function setupFormSubmitListener() {
   $('#questionForm').submit(function(event) {
     event.preventDefault();
@@ -205,6 +206,8 @@ function setupFormSubmitListener() {
   });
 }
 
+//provides feedback on whether the submitted answer was correct or not.
+//It also applies the appropriate styling to the answer
 function showUserFeedback() {
   $('.js-user-feedback-text').text(store.wasAnswerCorrect ? "Correct!" : "Incorrect; the correct answer is " + store.questions[store.questionNumber].correctAnswer + ".");
   $('.js-user-feedback-text').addClass(store.wasAnswerCorrect ? 'correct' : 'wrong');
